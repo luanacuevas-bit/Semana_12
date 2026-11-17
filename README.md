@@ -42,6 +42,58 @@ No colisionan.
 
 - Factor de carga: α = 10/7 ≈ 1.43 (supera 0.75, por lo que se necesita rehashing).
 - Longitud máxima de lista: 3. Cubos vacíos: 3 (índices 2, 4 y 5).
+## Actividad 3 – Implementación de `hash.h` (Stefany Marie Pampa Yucra)
+
+Tabla hash genérica `TablaHash<K, V>` en C++17 con **encadenamiento separado** y **rehashing automático**. Los nodos se manejan con `std::unique_ptr`, sin `new` ni `delete` manuales.
+
+### Archivos (carpeta `actividad3/`)
+
+| Archivo | Descripción |
+|---|---|
+| `hash.h` | Implementación de la tabla hash |
+| `test_hash.cpp` | Casos de prueba con `assert` (del docente, sin modificar) |
+
+### Métodos implementados
+
+| Método | Qué hace |
+|---|---|
+| `insertar(clave, valor)` | Si la clave existe, actualiza el valor; si no, inserta al frente del cubo e incrementa `_n`. Hace `rehash()` si α > 0.75. |
+| `buscar(clave)` | Recorre la lista del cubo y devuelve `std::optional<V>` (`std::nullopt` si no existe). |
+| `eliminar(clave)` | Desencadena el nodo con `unique_ptr` (sin `delete`) y decrementa `_n`. Devuelve `true` o `false`. |
+| `rehash()` | Crea una tabla de tamaño `siguiente_primo(2 * m)` y re-enlaza los nodos sin copiarlos. |
+
+### Notas de implementación y dificultades encontradas
+
+- **`unique_ptr` no se copia, solo se mueve.** Insertar al frente se resolvió con `nuevo->sig = std::move(_tabla[idx])` y luego poniendo el nodo nuevo como cabeza.
+- **Eliminar sin `delete`.** Se usó un puntero al `unique_ptr` que apunta al nodo actual (`auto* enlace = &_tabla[idx]`), así borrar la cabeza o un nodo intermedio es el mismo código.
+- **Rehash.** Dentro de `rehash()` el índice se calcula con `% nuevo_m` y no con `_idx()`, que usaría el `m` viejo. Además, se guarda el siguiente nodo antes de re-enlazar para no perder la lista.
+- **Actualizar vs. insertar.** `_n` solo aumenta cuando la clave es nueva (test P2).
+- **`#include <iostream>`.** `test_hash.cpp` usa `std::cout` sin incluirlo; como no se puede modificar, se agregó en `hash.h`.
+
+### Observaciones
+
+- En el test P5 (m = 7), el rehash ocurre al insertar el 6.º elemento (α = 6/7 ≈ 0.86) y la tabla pasa a 17 cubos. Al final α = 10/17 ≈ 0.59, menor que 0.76.
+- Usar tamaños primos reparte mejor las claves y reduce las colisiones.
+- El rehash cuesta O(n), pero ocurre pocas veces, por lo que `insertar` mantiene un costo O(1) promedio.
+- En el peor caso (todas las claves en un mismo cubo) las operaciones pasan a O(n).
+- Limitaciones: la tabla solo crece (no se reduce al eliminar) y no tiene iteradores. Para una versión más completa se podrían agregar.
+- Se verificó con `-Wall -Wextra` y con `-fsanitize=address,undefined`: sin fugas de memoria ni accesos inválidos.
+
+### Cómo ejecutar
+
+```bash
+cd actividad3
+g++ -std=c++17 -Wall test_hash.cpp -o test_hash
+./test_hash          # en Windows: test_hash.exe
+```
+
+### Resultado
+
+Pasan los 5 grupos de pruebas (P1–P5) y el programa imprime:
+
+```
+Todos los test pasaron!
+```
 
 ## Cómo ejecutar
 
