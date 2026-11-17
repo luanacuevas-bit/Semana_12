@@ -42,8 +42,7 @@ No colisionan.
 
 - Factor de carga: α = 10/7 ≈ 1.43 (supera 0.75, por lo que se necesita rehashing).
 - Longitud máxima de lista: 3. Cubos vacíos: 3 (índices 2, 4 y 5).
-## Actividad 3 – Implementación de `hash.h` (Stefany Marie Pampa Yucra)
-
+## Actividad 3 – Implementación de `hash.h`
 Tabla hash genérica `TablaHash<K, V>` en C++17 con **encadenamiento separado** y **rehashing automático**. Los nodos se manejan con `std::unique_ptr`, sin `new` ni `delete` manuales.
 
 ### Archivos (carpeta `actividad3/`)
