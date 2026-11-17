@@ -1,6 +1,6 @@
 Tabla de Comparacion de Rendimiento
 
-| n       | Hash (ns) | Búsqueda Binaria (ns) | Relación BST/Hash | ¿Confirma O(1) vs O(log n)? |
+| n       | Hash (ns) | BST/binaria (ns) | Ratio BST/Hash | ¿Confirma O(1) vs O(log n)? |
 |---------|-----------|-----------------------|-------------------|---------------------------------------------------------------------------|
 | 1 000   | 320.0 ns  |  39960.0 ns           |   124.88x         |    Parcial: el hash gana, pero el valor de la búsqueda binaria es atípico |
 | 5 000   | 320.0 ns  |  880.0 ns             |    2.75x          |     si                                                                    |
