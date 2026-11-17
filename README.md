@@ -132,9 +132,13 @@ Comparé el tiempo de búsqueda en una tabla hash (dict de Python) contra una b�
 Resultados:
 
 n = 1 000: Hash 320.0 ns, BST 39 960.0 ns, ratio 124.88x
+
 n = 5 000: Hash 320.0 ns, BST 880.0 ns, ratio 2.75x
+
 n = 10 000: Hash 700.0 ns, BST 3 480.0 ns, ratio 4.97x
+
 n = 50 000: Hash 1 420.0 ns, BST 4 260.0 ns, ratio 3.00x
+
 n = 100 000: Hash 2 220.0 ns, BST 4 980.0 ns, ratio 2.24x
 
 Conclusión: los resultados confirman la teoría, porque en todos los tamaños el hash fue más rápido que la búsqueda binaria, como se espera de O(1) frente a O(log n). No salió perfecto: en n = 1 000 la búsqueda binaria dio un valor muy alto (39 960 ns), probablemente un error de medición en una de las repeticiones, y el hash no se mantuvo constante, subió de 320 a 2 220 ns al aumentar n. Esto pasa porque se miden tiempos muy pequeños con pocas repeticiones, y factores como la computadora, los programas en segundo plano y la memoria caché afectan los resultados.
